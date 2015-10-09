@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from ctypes import c_int, c_long, byref
 from datetime import date
 from pypxlib.pxlib_ctypes import *
@@ -30,7 +31,7 @@ class Table(object):
 	@property
 	def _field_indices(self):
 		if self._field_indices_cached is None:
-			self._field_indices_cached = {}
+			self._field_indices_cached = OrderedDict()
 			num_fields = self.pxdoc.contents.px_head.contents.px_numfields
 			for i in range(num_fields):
 				field = PX_get_field(self.pxdoc, i).contents
