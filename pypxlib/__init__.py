@@ -13,6 +13,17 @@ class Table(object):
 
 	PX_ENCODING = 'ascii'
 
+	class Iterator(object):
+		def __init__(self, table):
+			self.table = table
+			self.i = 0
+		def next(self):
+			if self.i < len(self.table):
+				result = self.table[self.i]
+				self.i += 1
+				return result
+			raise StopIteration()
+
 	def __init__(self, file_path, encoding='cp850'):
 		self.file_path = file_path
 		self.encoding = encoding
@@ -48,6 +59,8 @@ class Table(object):
 		return Row(pxvals, self._field_indices, self.encoding)
 	def __len__(self):
 		return self.pxdoc.contents.px_head.contents.px_numrecords
+	def __iter__(self):
+		return Table.Iterator(self)
 	def close(self):
 		PX_close(self.pxdoc)
 		PX_delete(self.pxdoc)
