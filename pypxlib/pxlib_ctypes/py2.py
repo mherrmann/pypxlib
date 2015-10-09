@@ -1,9 +1,7 @@
 '''Wrapper for paradox.h
 
-Generated with:
+Originally generated with:
 ctypesgen.py -lpx /usr/local/include/paradox.h -o pxlib_generated_py2.py
-
-Do not modify this file.
 '''
 
 __docformat__ =  'restructuredtext'
@@ -571,9 +569,8 @@ class WindowsLibraryLoader(LibraryLoader):
     def getplatformpaths(self, libname):
         if os.path.sep not in libname:
             for name in self.name_formats:
-                dll_in_current_dir = os.path.abspath(name % libname)
-                if os.path.exists(dll_in_current_dir):
-                    yield dll_in_current_dir
+                yield os.path.abspath(name % libname)
+                yield os.path.join(os.path.dirname(__file__), name % libname)
                 path = ctypes.util.find_library(name % libname)
                 if path:
                     yield path
