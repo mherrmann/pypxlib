@@ -45,6 +45,8 @@ class Table(object):
 				(rownum, self.file_path)
 			)
 		return Row(pxvals, self._field_indices, self.encoding)
+	def __len__(self):
+		return self.pxdoc.contents.px_head.contents.px_numrecords
 	def close(self):
 		PX_close(self.pxdoc)
 		PX_delete(self.pxdoc)
