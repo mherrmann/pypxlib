@@ -18,8 +18,7 @@ tar -zxvf pxlib-0.6.5.tar.gz
 cd pxlib-0.6.5/
 ./configure
 make
-sudo make install
-```
+sudo make install```
 
 ## OS X 10.10.5
 ```bash
@@ -32,8 +31,7 @@ cd pxlib-0.6.5/
 echo './configure --prefix=out' | brew sh
 sed -i '' 's/#define HAVE_LOCALE_H 1//' config.h
 make
-make install
-```
+make install```
 
 ## Windows 7
 1. Download and install Visual Studio Community 2015.
