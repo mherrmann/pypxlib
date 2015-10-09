@@ -249,6 +249,9 @@ class String(MutableString, Union):
         elif isinstance(obj, c_char_p):
             return obj
 
+        elif isinstance(obj, bytes):
+            return obj
+
         # Convert from POINTER(c_char)
         elif isinstance(obj, POINTER(c_char)):
             return obj
