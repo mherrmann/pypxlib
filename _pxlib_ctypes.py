@@ -9,6 +9,6 @@ if sys.platform == 'darwin':
 		raise ImportError(e)
 
 if sys.version_info[0] == 2:
-	from pxlib_generated_py2 import *
+	from _pxlib_ctypes_py2 import *
 else:
-	from pxlib_generated_py3 import *
+	from _pxlib_ctypes_py3 import *
