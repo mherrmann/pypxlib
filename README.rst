@@ -104,10 +104,12 @@ library:
     # Free the memory associated with pxdoc:
     PX_delete(pxdoc)
 
-All the ``PX_...`` functions come directly from `pxlib`_. Note that you
-do not need to call ``PX_boot()`` and ``PX_shutdown``, as these
+All the ``PX_...`` functions come directly from the `list of pxlibs functions`_.
+Note that you do not need to call ``PX_boot()`` and ``PX_shutdown``, as these
 functions are already called when importing ``pypxlib``, and via an
 ``atexit`` handler.
+
+.. _`list of pxlibs functions`: http://pxlib.sourceforge.net/documentation.php
 
 Dynamic libraries in this repository
 ====================================
