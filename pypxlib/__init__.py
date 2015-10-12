@@ -27,14 +27,11 @@ class Table(object):
 	def __init__(self, file_path, encoding='cp850'):
 		self.file_path = file_path
 		self.encoding = encoding
-		self.pxdoc = self._field_indices_cached = None
-	def open(self):
-		file_path = self.file_path.encode(self.PX_ENCODING)
 		self.pxdoc = PX_new()
-		if PX_open_file(self.pxdoc, file_path) != 0:
+		if PX_open_file(self.pxdoc, file_path.encode(self.PX_ENCODING)) != 0:
 			raise PXError('Could not open file %s.' % self.file_path)
+		self._field_indices_cached = None
 	def __enter__(self):
-		self.open()
 		return self
 	@property
 	def fields(self):
@@ -61,12 +58,12 @@ class Table(object):
 		return self.pxdoc.contents.px_head.contents.px_numrecords
 	def __iter__(self):
 		return Table.Iterator(self)
+	def __exit__(self, *_):
+		self.close()
 	def close(self):
 		PX_close(self.pxdoc)
 		PX_delete(self.pxdoc)
-		self.pxdoc = self._field_indices_cached = None
-	def __exit__(self, *_):
-		self.close()
+		self._field_indices_cached = None
 
 class Row(object):
 	def __init__(self,  pxvals, field_indices, encoding):
