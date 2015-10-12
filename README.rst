@@ -4,6 +4,8 @@ pypxlib
 Python bindings for the `pxlib library`_ for reading and writing Paradox
 databases. The version of pxlib currently exposed by pypxlib is 0.6.5.
 
+.. _`pxlib library`: http://pxlib.sourceforge.net/
+
 Usage
 =====
 
