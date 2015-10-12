@@ -117,12 +117,12 @@ Dynamic libraries in this repository
 Here is a list of dynamic libraries contained in this repository, and
 how they were obtained:
 
- * ``libpx.so``, ``pxlib.dll``, ``libpx.dylib`` were obtained from building
-   pxlib 0.6.5 on Ubuntu 14.0.4.1, Windows 7 and Mac OS X 10.10.5, respectively.
-   See *Building pxlib* below.
- * ``libiconv2.dll`` was downloaded as part of the *Binaries* zip file from
-   ``http://gnuwin32.sourceforge.net/packages/libiconv.htm``. Its version is
-   1.9.2-1.
+* ``libpx.so``, ``pxlib.dll``, ``libpx.dylib`` were obtained from building
+  pxlib 0.6.5 on Ubuntu 14.0.4.1, Windows 7 and Mac OS X 10.10.5, respectively.
+  See *Building pxlib* below.
+* ``libiconv2.dll`` was downloaded as part of the *Binaries* zip file from
+  ``http://gnuwin32.sourceforge.net/packages/libiconv.htm``. Its version is
+  1.9.2-1.
 
 Building pxlib
 ==============
