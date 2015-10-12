@@ -1,9 +1,95 @@
 # pypxlib
 Python bindings for the [pxlib library](http://pxlib.sourceforge.net/) for reading and writing Paradox databases. The version of pxlib currently exposed by pypxlib is 0.6.5.
 
+# Usage
+pypxlib exposes a high-level API for reading Paradox databases. To use this API, you need the following import:
+
+```python
+from pypxlib import Table
+```
+
+Get the field names in a table:
+```python
+>>> table = Table('data.db')
+>>> table.fields
+['field1', 'field2', 'field3']
+```
+
+Get the number of rows:
+```python
+>>> len(table)
+123
+```
+
+Get the first row:
+```python
+>>> row = table[0]
+>>> row
+Row(field1='foo', field2=13, field3=True)
+```
+
+Access a row's properties:
+```python
+>>> row.field1
+'foo'
+>>> row['field1']
+'foo'
+```
+
+Iterate over all rows:
+
+```python
+>>> for row in table:
+...    print(row)
+...
+Row(field1='foo', field2=13, field3=True)
+Row(field2='bar', field2=87, field3=True)
+...
+```
+
+Don't forget to close the table!
+
+```python
+table = Table('data.db')
+try:
+    # Process the table...
+finally:
+    table.close()
+```
+
+Or use it as a context manager:
+
+```python
+with Table('data.db') as table:
+    # Process the table...
+```
+
+## Access to pxlib via ctypes
+pypxlib is esentially a thin wrapper around the pxlib C library. The high-level API described above makes it easy to *read* tables. If you also need to write to a table, or another more complicated use case, then you can fall back to the ctypes bindings of pxlib exposed by this library:
+
+```python
+from pypxlib.pxlib_ctypes import *
+
+pxdoc = PX_new()
+PX_open_file(pxdoc, b"test.db")
+
+num_fields = PX_get_num_fields(pxdoc)
+print('test.db has %d fields:' % num_fields)
+
+for i in range(num_fields):
+    field = PX_get_field(pxdoc, i)
+    print(field.contents.px_fname)
+
+# Close the file:
+PX_close(pxdoc)
+# Free the memory associated with pxdoc:
+PX_delete(pxdoc)```
+
+All the `PX_...` functions come directly from [pxlib](http://pxlib.sourceforge.net/documentation.php). Note that you do not need to call `PX_boot()` and `PX_shutdown`, as these functions are already called when importing `pypxlib`, and via an `atexit` handler.
+
 # Dynamic libraries in this repository
 Here is a list of dynamic libraries contained in this repository, and how they were obtained:
- * `libpx.so`, `pxlib.dll`, `libpx.dylib` were obtained from building pxlib 0.6.5 on Ubuntu 14.0.4.1 LTS, Windows 7 and Mac OS X 10.10.5, respectively. See *Building pxlib* below.
+ * `libpx.so`, `pxlib.dll`, `libpx.dylib` were obtained from building pxlib 0.6.5 on Ubuntu 14.0.4.1, Windows 7 and Mac OS X 10.10.5, respectively. See *Building pxlib* below.
  * `libiconv2.dll` was downloaded as part of the *Binaries* zip file from `http://gnuwin32.sourceforge.net/packages/libiconv.htm`. Its version is 1.9.2-1.
 
 # Building pxlib
