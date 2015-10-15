@@ -2,12 +2,10 @@ import ctypes
 import os.path
 import sys
 
-# Ensure that iconv is loaded before loading pxlib:
 try:
+	# Ensure that iconv is loaded before loading pxlib:
 	if sys.platform == 'darwin':
 		ctypes.CDLL('/usr/lib/libiconv.dylib', ctypes.RTLD_GLOBAL)
-	elif sys.platform == 'win32':
-		ctypes.cdll.LoadLibrary(os.path.join(os.path.dirname(__file__), 'libiconv2.dll'))
 except OSError as e:
 	raise ImportError(e)
 
