@@ -54,7 +54,7 @@ setup(
 	packages=['pypxlib', 'pypxlib.pxlib_ctypes'],
 	package_data={
 		'pypxlib.pxlib_ctypes': [
-			'pxlib.dll', 'libpx.dylib', 'libpx.so'
+			'pxlib.dll', 'pxlib_x64.dll', 'libpx.dylib', 'libpx.so'
 		]
 	}
 )
