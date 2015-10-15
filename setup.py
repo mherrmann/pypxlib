@@ -5,23 +5,18 @@ See:
 https://github.com/mherrmann/pypxlib
 """
 
-from codecs import open
-from os.path import abspath, dirname, join
-from setuptools import setup, find_packages
+from setuptools import setup
 
-here = abspath(dirname(__file__))
-
-with open(join(here, 'README.rst'), encoding='utf-8') as f:
-	long_description = f.read()
-
+description = \
+	'Python bindings for the pxlib library for reading and writing Paradox ' \
+	'databases.'
 setup(
 	name='pypxlib',
 
 	version='1.1',
 
-	description='Python bindings for the pxlib library for reading and writing '
-	            'Paradox databases.',
-	long_description=long_description,
+	description=description,
+	long_description=description + '\n\nHome page: https://github.com/mherrmann/pypxlib',
 	url='https://github.com/mherrmann/pypxlib',
 
 	author='Michael Herrmann',
