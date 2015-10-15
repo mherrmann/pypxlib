@@ -118,6 +118,7 @@ functions are already called when importing ``pypxlib``, and via an
 .. _`list of pxlibs functions`: http://pxlib.sourceforge.net/documentation.php
 
 == Platforms ==
+
 This library was tested on the following platforms:
 
 * **Windows 7 (64 bit)**: 32 and 64 bit Python 2.7.10 and 3.5.0.
