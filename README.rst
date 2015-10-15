@@ -117,9 +117,9 @@ Dynamic libraries in this repository
 Here is a list of dynamic libraries contained in this repository, and
 how they were obtained:
 
-* ``libpx.so``, ``pxlib.dll``, ``libpx.dylib`` were obtained from building
-  pxlib 0.6.5 on Ubuntu 14.0.4.1, Windows 7 and Mac OS X 10.10.5, respectively.
-  See *Building pxlib* below.
+* ``libpx.so``, ``pxlib.dll`` (``pxlib_x64.dll``), ``libpx.dylib`` were obtained
+  from building pxlib 0.6.5 on Ubuntu 14.0.4.1, Windows 7 and Mac OS X 10.10.5,
+  respectively. See *Building pxlib* below.
 * ``libiconv2.dll`` was downloaded as part of the *Binaries* zip file from
   ``http://gnuwin32.sourceforge.net/packages/libiconv.htm``. Its version is
   1.9.2-1.
@@ -164,24 +164,21 @@ OS X 10.10.5
 Windows 7
 ---------
 
-1.  Download and install Visual Studio Community 2015.
-2.  Download and install CMake.
-3.  Download the pxlib 0.6.5 sources from
-    ``http://sourceforge.net/projects/pxlib/files/latest/download?source=files``.
-4.  Extract the pxlib sources to a directory, eg. ``C:\pxlib-0.6.5``.
-5.  Download libiconv-1.9.2-1-lib.zip from
-    ``http://sourceforge.net/projects/gnuwin32/files/libiconv/1.9.2-1/libiconv-1.9.2-1-lib.zip/download``.
-6.  Extract libiconv-1.9.2-1-lib.zip into ``C:\pxlib-0.6.5``.
-7.  Open ``C:\pxlib-0.6.5\CMakeLists.txt`` with a text editor and add
-    the following line before ``check_include_file("iconv.h" ...)``:
-    ``set(CMAKE_REQUIRED_INCLUDES ${CMAKE_SOURCE_DIR}/include)``.
-8.  Also add the line
-    ``TARGET_LINK_LIBRARIES(pxlib ${CMAKE_SOURCE_DIR}/lib/libiconv.lib)``
-    to the end of the file.
-9.  Open a command prompt and cd to ``C:\pxlib-0.6.5``.
-10. Run ``cmake .``.
-11. Open the generated file ``C:\pxlib-0.6.5\ALL_BUILD.vcxproj`` in
-    Visual Studio.
-12. Under ``Build`` select ``Configuration Manager``. Select
-    Configuration ``Release`` for Project ``pxlib``.
-13. Click ``Build/Build Solution``.
+1. Download & install the `Microsoft Visual C++ Compiler for Python 2.7`_.
+2. Download and install CMake.
+3. Download the pxlib 0.6.5 sources from
+   ``http://sourceforge.net/projects/pxlib/files/latest/download?source=files``.
+4. Extract the pxlib sources to *two* directories for 32 and 64 bit,
+   respectively. Eg. ``C:\pxlib-0.6.5-x86`` and ``C:\pxlib-0.6.5-x64``.
+5. Start the *Visual C++ 2008 32-bit Command Prompt*, cd to
+   ``C:\pxlib-0.6.5-x86`` and execute the following commands:
+.. code:: bash
+
+    cmake -D CMAKE_CXX_FLAGS_RELEASE=/MT -DCMAKE_BUILD_TYPE=Release -D PX_HAVE_ICONV=0 -D PX_HAVE_RECODE=0 .
+    nmake
+
+6. Repeat step 5. with the *64*-bit Command Prompt and ``C:\pxlib-0.6.5-x64``.
+7. That's it. You now have the 32 bit dll in ``C:\pxlib-0.6.5-x86\pxlib.dll``
+   and the 64 bit dll in ``C:\pxlib-0.6.5-x64\pxlib.dll``.
+
+.. _`Microsoft Visual C++ Compiler for Python 2.7`: http://www.microsoft.com/en-us/download/details.aspx?id=44266
