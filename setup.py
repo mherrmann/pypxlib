@@ -13,7 +13,7 @@ description = \
 setup(
 	name='pypxlib',
 
-	version='1.1',
+	version='1.2',
 
 	description=description,
 	long_description=description + '\n\nHome page: https://github.com/mherrmann/pypxlib',
