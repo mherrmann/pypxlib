@@ -117,7 +117,8 @@ functions are already called when importing ``pypxlib``, and via an
 
 .. _`list of pxlibs functions`: http://pxlib.sourceforge.net/documentation.php
 
-== Platforms ==
+Platforms
+=========
 
 This library was tested on the following platforms:
 
