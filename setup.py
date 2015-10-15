@@ -29,6 +29,8 @@ setup(
 
 	license='GPLv2',
 
+	platforms=['MacOS', 'Windows', 'Debian'],
+
 	classifiers=[
 		'Development Status :: 4 - Beta',
 		'Intended Audience :: Developers',
