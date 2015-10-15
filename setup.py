@@ -17,7 +17,7 @@ with open(join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
 	name='pypxlib',
 
-	version='1.0',
+	version='1.1',
 
 	description='Python bindings for the pxlib library for reading and writing '
 	            'Paradox databases.',
@@ -59,7 +59,7 @@ setup(
 	packages=['pypxlib', 'pypxlib.pxlib_ctypes'],
 	package_data={
 		'pypxlib.pxlib_ctypes': [
-			'pxlib.dll', 'libiconv2.dll', 'libpx.dylib', 'libpx.so'
+			'pxlib.dll', 'libpx.dylib', 'libpx.so'
 		]
 	}
 )
