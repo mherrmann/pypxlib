@@ -6,6 +6,12 @@ databases. The version of pxlib currently exposed by pypxlib is 0.6.5.
 
 .. _`pxlib library`: http://pxlib.sourceforge.net/
 
+Installation
+============
+.. code:: bash
+
+    pip install pypxlib
+
 Usage
 =====
 
@@ -111,15 +117,20 @@ functions are already called when importing ``pypxlib``, and via an
 
 .. _`list of pxlibs functions`: http://pxlib.sourceforge.net/documentation.php
 
+== Platforms ==
+This library was tested on the following platforms:
+
+* **Windows 7 (64 bit)**: 32 and 64 bit Python 2.7.10 and 3.5.0.
+* **OS X**: Python 2.7.10 and 3.4.2.
+* **Ubuntu 14.04.1 (64bit)**: Python 2.7.6 and 3.4.0.
+
 Dynamic libraries in this repository
 ====================================
 
-Here is a list of dynamic libraries contained in this repository, and
-how they were obtained:
-
-* ``libpx.so``, ``pxlib.dll`` (``pxlib_x64.dll``), ``libpx.dylib`` were obtained
-  from building pxlib 0.6.5 on Ubuntu 14.0.4.1, Windows 7 and Mac OS X 10.10.5,
-  respectively. See *Building pxlib* below.
+The dynamic libraries ``libpx.so``, ``pxlib.dll`` (``pxlib_x64.dll``),
+and ``libpx.dylib`` were obtained from building pxlib 0.6.5 on Ubuntu
+14.0.4.1, Windows 7 and Mac OS X 10.10.5, respectively.
+See *Building pxlib* below.
 
 Building pxlib
 ==============
@@ -164,7 +175,7 @@ Windows 7
 1. Download & install the `Microsoft Visual C++ Compiler for Python 2.7`_.
 2. Download and install CMake.
 3. Download the pxlib 0.6.5 sources from
-   ``http://sourceforge.net/projects/pxlib/files/latest/download?source=files``.
+   http://sourceforge.net/projects/pxlib/files/latest/download?source=files .
 4. Extract the pxlib sources to *two* directories for 32 and 64 bit,
    respectively. Eg. ``C:\pxlib-0.6.5-x86`` and ``C:\pxlib-0.6.5-x64``.
 5. Start the *Visual C++ 2008 32-bit Command Prompt*, cd to
