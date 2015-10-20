@@ -1,10 +1,7 @@
 from collections import OrderedDict
-from ctypes import c_int, c_long, byref
-from datetime import date
 from pypxlib.pxlib_ctypes import *
 
 import atexit
-import sys
 
 PX_boot()
 atexit.register(PX_shutdown)
@@ -23,6 +20,8 @@ class Table(object):
 				self.i += 1
 				return result
 			raise StopIteration()
+		# Python 3:
+		__next__ = next
 
 	def __init__(self, file_path, encoding='cp850'):
 		self.file_path = file_path
@@ -47,6 +46,15 @@ class Table(object):
 				self._field_indices_cached[field_name] = i
 		return self._field_indices_cached
 	def __getitem__(self, rownum):
+		if not isinstance(rownum, int):
+			raise TypeError(
+				'Table indices must be integers, not %s.' % type(rownum)
+			)
+		_len = len(self)
+		if rownum < 0:
+			rownum %= _len
+		elif rownum > _len:
+			raise IndexError('table index out of range.')
 		pxvals = PX_retrieve_record(self.pxdoc, rownum)
 		if not pxvals:
 			raise PXError(
@@ -64,6 +72,10 @@ class Table(object):
 		PX_close(self.pxdoc)
 		PX_delete(self.pxdoc)
 		self._field_indices_cached = None
+	def __repr__(self):
+		return '%s(%r)' % (self.__class__.__name__, self.file_path)
+	def __str__(self):
+		return repr(self)
 
 class Row(object):
 	def __init__(self,  pxvals, field_indices, encoding):
@@ -74,7 +86,7 @@ class Row(object):
 		try:
 			return self[item]
 		except KeyError:
-			return AttributeError(item)
+			raise AttributeError(item)
 	def __getitem__(self, item):
 		pxval_index = self.field_indices[item]
 		return self._parse_pxval(self.pxvals[pxval_index].contents)

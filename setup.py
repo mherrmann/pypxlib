@@ -13,10 +13,11 @@ description = \
 setup(
 	name='pypxlib',
 
-	version='1.2',
+	version='1.3',
 
 	description=description,
-	long_description=description + '\n\nHome page: https://github.com/mherrmann/pypxlib',
+	long_description=
+		description + '\n\nHome page: https://github.com/mherrmann/pypxlib',
 	url='https://github.com/mherrmann/pypxlib',
 
 	author='Michael Herrmann',
