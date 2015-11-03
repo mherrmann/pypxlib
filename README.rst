@@ -22,13 +22,14 @@ this API, you need the following import:
 
     from pypxlib import Table
 
-Get the field names in a table:
+Get the fields in a table:
 
 .. code:: python
 
     >>> table = Table('data.db')
     >>> table.fields
-    ['field1', 'field2', 'field3']
+    OrderedDict([('field1', <pypxlib.LongField object at 0x1072c6710>),
+    ('field2', <pypxlib.AlphaField object at 0x10731ffd0>)]
 
 Get the number of rows:
 
@@ -43,16 +44,16 @@ Get the first row:
 
     >>> row = table[0]
     >>> row
-    Row(field1='foo', field2=13, field3=True)
+    Row(field1=13, field2='foo')
 
 Access a row’s properties:
 
 .. code:: python
 
     >>> row.field1
-    'foo'
+    13
     >>> row['field1']
-    'foo'
+    13
 
 Iterate over all rows:
 
@@ -61,11 +62,44 @@ Iterate over all rows:
     >>> for row in table:
     ...    print(row)
     ...
-    Row(field1='foo', field2=13, field3=True)
-    Row(field2='bar', field2=87, field3=True)
+    Row(field1=13, field2='foo')
+    Row(field2=87, field2='bar')
     ...
 
-Don’t forget to close the table!
+There is limited support for modifying tables:
+
+.. code:: python
+
+    >>> row = table[0]
+    >>> row.field1 = 20
+    >>> row.save()
+    >>> table[0]
+    20
+
+Do note that you must call `.save(...)` on the exact `Row` object that you
+modified. That is, the following *will not work*:
+
+.. code:: python
+
+    >>> # This does not work!
+    >>> table[0].field1 = 20
+    >>> table[0].save()
+
+Rows can also be inserted. This is done by passing a tuple of objects to
+`table.insert(...)`. The elements of the tuple must have exactly the types
+given by the table's `.fields` property:
+
+.. code:: python
+
+    >>> table.fields
+    OrderedDict([('field1', <pypxlib.LongField object at 0x1072c6710>),
+    ('field2', <pypxlib.AlphaField object at 0x10731ffd0>)]
+    >>> table.insert((50, 'Some text'))
+    97
+    >>> table[97]
+    Row(field1=50, field2='Some text')
+
+Don't forget to close the table when you are done!
 
 .. code:: python
 
@@ -86,10 +120,10 @@ Access to pxlib via ctypes
 --------------------------
 
 pypxlib is esentially a thin wrapper around the pxlib C library. The
-high-level API described above makes it easy to *read* tables. If you
-also need to write to a table, or another more complicated use case,
-then you can fall back to the ctypes bindings of pxlib exposed by this
-library:
+high-level API described above makes it easy to read tables but offers limited
+support when it comes to writing tables. If you also need to write to a table,
+or another more complicated use case, then you can fall back to the ctypes
+bindings of pxlib exposed by this library:
 
 .. code:: python
 
@@ -166,7 +200,7 @@ OS X 10.10.5
     curl -L 'http://downloads.sourceforge.net/project/pxlib/pxlib/0.6.5/pxlib-0.6.5.tar.gz?ts='`date +%s`'&use_mirror=freefr' -o pxlib-0.6.5.tar.gz
     tar -zxvf pxlib-0.6.5.tar.gz
     cd pxlib-0.6.5/
-    echo './configure --prefix=out' | brew sh
+    echo './configure --prefix=`pwd`/out' | brew sh
     sed -i '' 's/#define HAVE_LOCALE_H 1//' config.h
     make
     make install
