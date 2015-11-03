@@ -44,10 +44,7 @@ class Table(object):
 					Field.from_type(ord(field.px_ftype), i, self.encoding)
 		return self._fields_cached
 	def __getitem__(self, rownum):
-		if not isinstance(rownum, int):
-			raise TypeError(
-				'Table indices must be integers, not %s.' % type(rownum)
-			)
+		self._check_rownum(rownum)
 		_len = len(self)
 		if rownum < 0:
 			rownum %= _len
@@ -60,6 +57,17 @@ class Table(object):
 				(rownum, self.file_path)
 			)
 		return Row(self, rownum, pxvals)
+	def _check_rownum(self, rownum):
+		if not isinstance(rownum, int):
+			raise TypeError(
+				'Table indices must be integers, not %s.' % type(rownum)
+			)
+	def __delitem__(self, rownum):
+		self._check_rownum(rownum)
+		if PX_delete_record(self.pxdoc, rownum) == -1:
+			raise PXError(
+				'Could not delete row %d of file %s.' % (rownum, self.file_path)
+			)
 	def __len__(self):
 		return self.pxdoc.contents.px_head.contents.px_numrecords
 	def __iter__(self):

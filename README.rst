@@ -95,11 +95,17 @@ given by the table's ``.fields`` property:
     OrderedDict([('field1', <pypxlib.LongField object at 0x1072c6710>),
     ('field2', <pypxlib.AlphaField object at 0x10731ffd0>)]
     >>> table.insert((50, 'Some text'))
-    97
-    >>> table[97]
+    2
+    >>> table[2]
     Row(field1=50, field2='Some text')
 
-Don't forget to close the table when you are done!
+Deleting a row can be done via the ``del`` keyword:
+
+.. code:: python
+
+    >>> del table[2]
+
+Finally, don't forget to close the table when you are done!
 
 .. code:: python
 
