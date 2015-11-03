@@ -76,7 +76,7 @@ There is limited support for modifying tables:
     >>> table[0]
     20
 
-Do note that you must call `.save(...)` on the exact `Row` object that you
+Do note that you must call ``.save(...)`` on the exact ``Row`` object that you
 modified. That is, the following *will not work*:
 
 .. code:: python
@@ -86,8 +86,8 @@ modified. That is, the following *will not work*:
     >>> table[0].save()
 
 Rows can also be inserted. This is done by passing a tuple of objects to
-`table.insert(...)`. The elements of the tuple must have exactly the types
-given by the table's `.fields` property:
+``table.insert(...)``. The elements of the tuple must have exactly the types
+given by the table's ``.fields`` property:
 
 .. code:: python
 
