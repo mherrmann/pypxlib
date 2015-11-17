@@ -208,6 +208,7 @@ OS X 10.10.5
     cd pxlib-0.6.5/
     echo './configure --prefix=`pwd`/out' | brew sh
     sed -i '' 's/#define HAVE_LOCALE_H 1//' config.h
+    sed -i '' "/^CFLAGS =/ s/$/ -mmacosx-version-min=10.5/" Makefile
     make
     make install
 
