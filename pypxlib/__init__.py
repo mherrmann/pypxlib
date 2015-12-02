@@ -1,6 +1,5 @@
-import datetime
-
 from collections import OrderedDict
+from datetime import date, time
 from pypxlib.pxlib_ctypes import *
 
 import atexit
@@ -156,7 +155,7 @@ class DateField(Field):
 		PX_SdnToGregorian(
 			days_since_jan_0_0000, byref(year), byref(month), byref(day)
 		)
-		return datetime.date(year.value, month.value, day.value)
+		return date(year.value, month.value, day.value)
 	def _serialize_to(self, value, pxval_value):
 		sdn = PX_GregorianToSdn(value.year, value.month, value.day)
 		pxval_value.lval = sdn - 1721425
@@ -198,7 +197,7 @@ class TimeField(Field):
 		minutes_since_midnight = seconds_since_midnight // 60
 		minutes = minutes_since_midnight % 60
 		hours = minutes_since_midnight // 60
-		return datetime.time(hours, minutes, seconds, ms * 1000)
+		return time(hours, minutes, seconds, ms * 1000)
 	@classmethod
 	def _serialize_to(cls, value, pxval_value):
 		pxval_value.lval = cls._serialize_ms(value)
