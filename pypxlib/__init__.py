@@ -110,7 +110,7 @@ class Field(object):
 			return DoubleField(index, type_)
 		if type_ == pxfLogical:
 			return LogicalField(index, type_)
-		if type_ in (pxfBLOb, pxfMemoBLOb, pxfMemoBLOb, pxfBCD, pxfBytes):
+		if type_ in (pxfBLOb, pxfMemoBLOb, pxfBCD, pxfBytes):
 			return BytesField(index, type_)
 		if type_ in (pxfOLE, pxfGraphic):
 			return BytesField(index, type_)
