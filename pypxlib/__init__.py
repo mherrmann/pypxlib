@@ -2,6 +2,7 @@ from collections import OrderedDict
 from datetime import date, time
 from pypxlib.pxlib_ctypes import *
 
+import os.path
 import atexit
 
 PX_boot()
@@ -24,12 +25,26 @@ class Table(object):
 		# Python 3:
 		__next__ = next
 
-	def __init__(self, file_path, encoding='cp850'):
+	def __init__(self, file_path, blob_file_path=None, encoding='cp850'):
 		self.file_path = file_path
+		self.blob_file_path = blob_file_path
 		self.encoding = encoding
 		self.pxdoc = PX_new()
 		if PX_open_file(self.pxdoc, file_path.encode(self.PX_ENCODING)) != 0:
 			raise PXError('Could not open file %s.' % self.file_path)
+
+		# BLOB Support
+		# http://pxlib.sourceforge.net/documentation.php?manpage=PX_set_blob_file
+		if not self.blob_file_path:
+			# If not blob_file_path given, we try to acces automatically the related MB file
+			possible_blob_file = str(file_path).replace('.db', '.mb').replace('.DB', '.MB')
+			if os.path.isfile(possible_blob_file):
+				self.blob_file_path = blob_file_path
+
+		# If given blob_file_path or file was automatically found we try to open it
+		if self.blob_file_path and PX_set_blob_file(self.pxdoc, blob_file_path.encode(self.PX_ENCODING)) < 0:
+			raise PXError('Could not open BLOB file %s.' % self.blob_file_path)
+
 		self._fields_cached = None
 	def __enter__(self):
 		return self
@@ -180,7 +195,13 @@ class LogicalField(Field):
 
 class BytesField(Field):
 	def _deserialize(self, pxval_value):
-		return pxval_value.str.val[:pxval_value.str.len]
+		try:
+			# Legacy support
+			return pxval_value.str.val[:pxval_value.str.len]
+		except:
+			# TODO - Change hardcoded enconding. Consider use the encoding parameter of Table __init__
+			return pxval_value.str.val.data.decode('cp850')
+
 	def _serialize_to(self, value, pxval_value):
 		pxval_value.str.val = value
 		pxval_value.str.len = len(value)
