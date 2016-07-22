@@ -35,14 +35,15 @@ class Table(object):
 
 		# BLOB Support
 		# http://pxlib.sourceforge.net/documentation.php?manpage=PX_set_blob_file
-		if not self.blob_file_path:
+		if not blob_file_path:
 			# If not blob_file_path given, we try to acces automatically the related MB file
 			possible_blob_file = str(file_path).replace('.db', '.mb').replace('.DB', '.MB')
 			if os.path.isfile(possible_blob_file):
+				blob_file_path = possible_blob_file
 				self.blob_file_path = blob_file_path
 
 		# If given blob_file_path or file was automatically found we try to open it
-		if self.blob_file_path and PX_set_blob_file(self.pxdoc, blob_file_path.encode(self.PX_ENCODING)) < 0:
+		if blob_file_path and PX_set_blob_file(self.pxdoc, blob_file_path.encode(self.PX_ENCODING)) < 0:
 			raise PXError('Could not open BLOB file %s.' % self.blob_file_path)
 
 		self._fields_cached = None
@@ -200,8 +201,7 @@ class BytesField(Field):
 			return pxval_value.str.val[:pxval_value.str.len]
 		except:
 			# TODO - Change hardcoded enconding. Consider use the encoding parameter of Table __init__
-			return pxval_value.str.val.data.decode('cp850')
-
+			return pxval_value.str.val.data
 	def _serialize_to(self, value, pxval_value):
 		pxval_value.str.val = value
 		pxval_value.str.len = len(value)
