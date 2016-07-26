@@ -1,8 +1,8 @@
 from collections import OrderedDict
 from datetime import date, time
+from os.path import isfile
 from pypxlib.pxlib_ctypes import *
 
-import os.path
 import atexit
 
 PX_boot()
@@ -26,26 +26,20 @@ class Table(object):
 		__next__ = next
 
 	def __init__(self, file_path, blob_file_path=None, encoding='cp850'):
+		# BLOB Support - http://pxlib.sourceforge.net/documentation.php?manpage=PX_set_blob_file
+		if not blob_file_path:
+			possible_blob_file = file_path.replace('.db', '.mb').replace('.DB', '.MB')
+			if isfile(possible_blob_file):
+				blob_file_path = possible_blob_file
 		self.file_path = file_path
-		self.blob_file_path = blob_file_path
 		self.encoding = encoding
 		self.pxdoc = PX_new()
 		if PX_open_file(self.pxdoc, file_path.encode(self.PX_ENCODING)) != 0:
 			raise PXError('Could not open file %s.' % self.file_path)
-
-		# BLOB Support
-		# http://pxlib.sourceforge.net/documentation.php?manpage=PX_set_blob_file
-		if not blob_file_path:
-			# If not blob_file_path given, we try to acces automatically the related MB file
-			possible_blob_file = str(file_path).replace('.db', '.mb').replace('.DB', '.MB')
-			if os.path.isfile(possible_blob_file):
-				blob_file_path = possible_blob_file
-				self.blob_file_path = blob_file_path
-
-		# If given blob_file_path or file was automatically found we try to open it
-		if blob_file_path and PX_set_blob_file(self.pxdoc, blob_file_path.encode(self.PX_ENCODING)) < 0:
-			raise PXError('Could not open BLOB file %s.' % self.blob_file_path)
-
+		if blob_file_path:
+			blob_file_path_enc = blob_file_path.encode(self.PX_ENCODING)
+			if PX_set_blob_file(self.pxdoc, blob_file_path_enc) < 0:
+				raise PXError('Could not open BLOB file %s.' % blob_file_path)
 		self._fields_cached = None
 	def __enter__(self):
 		return self
