@@ -25,7 +25,7 @@ class Table(object):
 		# Python 3:
 		__next__ = next
 
-	def __init__(self, file_path, blob_file_path=None, encoding='cp850'):
+	def __init__(self, file_path, encoding='cp850', blob_file_path=None):
 		# BLOB Support - http://pxlib.sourceforge.net/documentation.php?manpage=PX_set_blob_file
 		if not blob_file_path:
 			possible_blob_file = file_path.replace('.db', '.mb').replace('.DB', '.MB')
