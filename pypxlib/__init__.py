@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from datetime import date, time
+from os.path import isfile
 from pypxlib.pxlib_ctypes import *
 
 import atexit
@@ -24,12 +25,21 @@ class Table(object):
 		# Python 3:
 		__next__ = next
 
-	def __init__(self, file_path, encoding='cp850'):
+	def __init__(self, file_path, encoding='cp850', blob_file_path=None):
+		if not blob_file_path:
+			possible_blob_file = \
+				file_path.replace('.db', '.mb').replace('.DB', '.MB')
+			if isfile(possible_blob_file):
+				blob_file_path = possible_blob_file
 		self.file_path = file_path
 		self.encoding = encoding
 		self.pxdoc = PX_new()
 		if PX_open_file(self.pxdoc, file_path.encode(self.PX_ENCODING)) != 0:
 			raise PXError('Could not open file %s.' % self.file_path)
+		if blob_file_path:
+			blob_file_path_enc = blob_file_path.encode(self.PX_ENCODING)
+			if PX_set_blob_file(self.pxdoc, blob_file_path_enc) < 0:
+				raise PXError('Could not open BLOB file %s.' % blob_file_path)
 		self._fields_cached = None
 	def __enter__(self):
 		return self
@@ -67,7 +77,8 @@ class Table(object):
 		self._check_rownum(rownum)
 		if PX_delete_record(self.pxdoc, rownum) == -1:
 			raise PXError(
-				'Could not delete row %d of file %s.' % (rownum, self.file_path)
+				'Could not delete row %d of file %s.' %
+				(rownum, self.file_path)
 			)
 	def __len__(self):
 		return self.pxdoc.contents.px_head.contents.px_numrecords
@@ -110,7 +121,7 @@ class Field(object):
 			return DoubleField(index, type_)
 		if type_ == pxfLogical:
 			return LogicalField(index, type_)
-		if type_ in (pxfBLOb, pxfMemoBLOb, pxfMemoBLOb, pxfBCD, pxfBytes):
+		if type_ in (pxfBLOb, pxfMemoBLOb, pxfBCD, pxfBytes):
 			return BytesField(index, type_)
 		if type_ in (pxfOLE, pxfGraphic):
 			return BytesField(index, type_)
@@ -180,7 +191,7 @@ class LogicalField(Field):
 
 class BytesField(Field):
 	def _deserialize(self, pxval_value):
-		return pxval_value.str.val[:pxval_value.str.len]
+		return pxval_value.str.val.data
 	def _serialize_to(self, value, pxval_value):
 		pxval_value.str.val = value
 		pxval_value.str.len = len(value)
@@ -243,7 +254,8 @@ class Row(object):
 			else:
 				self[item] = value
 	def save(self):
-		result = PX_update_record(self._table.pxdoc, self._pxvals, self._rownum)
+		result = \
+			PX_update_record(self._table.pxdoc, self._pxvals, self._rownum)
 		if result == -1:
 			raise PXError('Could not update record.')
 	def __repr__(self):
