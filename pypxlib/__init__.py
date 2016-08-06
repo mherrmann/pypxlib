@@ -26,9 +26,9 @@ class Table(object):
 		__next__ = next
 
 	def __init__(self, file_path, encoding='cp850', blob_file_path=None):
-		# BLOB Support - http://pxlib.sourceforge.net/documentation.php?manpage=PX_set_blob_file
 		if not blob_file_path:
-			possible_blob_file = file_path.replace('.db', '.mb').replace('.DB', '.MB')
+			possible_blob_file = \
+				file_path.replace('.db', '.mb').replace('.DB', '.MB')
 			if isfile(possible_blob_file):
 				blob_file_path = possible_blob_file
 		self.file_path = file_path
@@ -77,7 +77,8 @@ class Table(object):
 		self._check_rownum(rownum)
 		if PX_delete_record(self.pxdoc, rownum) == -1:
 			raise PXError(
-				'Could not delete row %d of file %s.' % (rownum, self.file_path)
+				'Could not delete row %d of file %s.' %
+				(rownum, self.file_path)
 			)
 	def __len__(self):
 		return self.pxdoc.contents.px_head.contents.px_numrecords
@@ -194,7 +195,6 @@ class BytesField(Field):
 			# Legacy support
 			return pxval_value.str.val[:pxval_value.str.len]
 		except:
-			# TODO - Change hardcoded enconding. Consider use the encoding parameter of Table __init__
 			return pxval_value.str.val.data
 	def _serialize_to(self, value, pxval_value):
 		pxval_value.str.val = value
@@ -258,7 +258,8 @@ class Row(object):
 			else:
 				self[item] = value
 	def save(self):
-		result = PX_update_record(self._table.pxdoc, self._pxvals, self._rownum)
+		result = \
+			PX_update_record(self._table.pxdoc, self._pxvals, self._rownum)
 		if result == -1:
 			raise PXError('Could not update record.')
 	def __repr__(self):
