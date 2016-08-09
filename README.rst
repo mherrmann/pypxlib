@@ -188,7 +188,7 @@ Ubuntu 14.04.1 LTS
 
     sudo apt-get update
     sudo apt-get install build-essential
-    wget 'http://downloads.sourceforge.net/project/pxlib/pxlib/0.6.5/pxlib-0.6.5.tar.gz?ts='`date +%s`'&use_mirror=freefr' -o pxlib-0.6.5.tar.gz
+    wget 'http://downloads.sourceforge.net/project/pxlib/pxlib/0.6.5/pxlib-0.6.5.tar.gz?ts='`date +%s`'&use_mirror=freefr' -O pxlib-0.6.5.tar.gz
     tar -zxvf pxlib-0.6.5.tar.gz
     cd pxlib-0.6.5/
     ./configure
