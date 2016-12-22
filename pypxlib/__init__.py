@@ -191,7 +191,7 @@ class LogicalField(Field):
 
 class BytesField(Field):
 	def _deserialize(self, pxval_value):
-		return pxval_value.str.val.data
+		return pxval_value.str.val.data[:pxval_value.str.len]
 	def _serialize_to(self, value, pxval_value):
 		pxval_value.str.val = value
 		pxval_value.str.len = len(value)
