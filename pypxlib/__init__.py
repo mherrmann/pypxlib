@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from datetime import date, time
+from datetime import date, time, datetime
 from os.path import isfile
 from pypxlib.pxlib_ctypes import *
 
@@ -171,8 +171,11 @@ class DateField(Field):
 		)
 		return date(year.value, month.value, day.value)
 	def _serialize_to(self, value, pxval_value):
+		pxval_value.lval = self._serialize_days(value)
+	@classmethod
+	def _serialize_days(cls, value):
 		sdn = PX_GregorianToSdn(value.year, value.month, value.day)
-		pxval_value.lval = sdn - 1721425
+		return sdn - 1721425
 
 class LongField(Field):
 	def _deserialize(self, pxval_value):
@@ -218,7 +221,7 @@ class TimeField(Field):
 	@classmethod
 	def _serialize_ms(cls, value):
 		return value.hour * 60 * 60 * 1000 + \
-			   value * minute * 60 * 1000 + \
+			   value.minute * 60 * 1000 + \
 			   value.second * 1000 + \
 			   value.microsecond // 1000
 
@@ -233,7 +236,9 @@ class TimestampField(Field):
 		return datetime.combine(date, time)
 	@classmethod
 	def _serialize_to(cls, value, pxval_value):
-		pxval_value.lval = TimeField._serialize(value) * 86400.0
+		days = DateField._serialize_days(value.date())
+		ms_rem = TimeField._serialize_ms(value.time())
+		pxval_value.dval = float((days * 86400000) + ms_rem)
 
 class Row(object):
 	def __init__(self, table, rownum, pxvals):
