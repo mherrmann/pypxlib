@@ -21,7 +21,7 @@ setup(
 	url='https://github.com/mherrmann/pypxlib',
 
 	author='Michael Herrmann',
-	author_email='[my first name]@[my last name].io',
+	author_email='myfirstname@mylastname.io',
 
 	license='GPLv2',
 
