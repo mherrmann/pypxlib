@@ -169,12 +169,18 @@ class DateField(Field):
 		PX_SdnToGregorian(
 			days_since_jan_0_0000, byref(year), byref(month), byref(day)
 		)
+		# if all values are 0, this is a blank date. return None
+		if all([year.value == 0, month.value == 0, day.value == 0]):
+			return None
 		return date(year.value, month.value, day.value)
 	def _serialize_to(self, value, pxval_value):
 		pxval_value.lval = self._serialize_days(value)
 	@classmethod
 	def _serialize_days(cls, value):
-		sdn = PX_GregorianToSdn(value.year, value.month, value.day)
+		if value:
+			sdn = PX_GregorianToSdn(value.year, value.month, value.day)
+		else:
+			sdn = PX_GregorianToSdn(0, 0, 0)
 		return sdn - 1721425
 
 class LongField(Field):
