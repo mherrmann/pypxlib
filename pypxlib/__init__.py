@@ -8,6 +8,8 @@ import atexit
 PX_boot()
 atexit.register(PX_shutdown)
 
+_NULL_IN_PARADOX = -2147483648
+
 class Table(object):
 
 	PX_ENCODING = 'ascii'
@@ -219,6 +221,8 @@ class TimeField(Field):
 		return cls._deserialize_ms(pxval_value.lval)
 	@classmethod
 	def _deserialize_ms(cls, ms_since_midnight):
+		if ms_since_midnight == _NULL_IN_PARADOX:
+			return None
 		ms = ms_since_midnight % 1000
 		seconds_since_midnight = ms_since_midnight // 1000
 		seconds = seconds_since_midnight % 60
