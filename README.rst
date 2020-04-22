@@ -162,9 +162,9 @@ Platforms
 
 This library was tested on the following platforms:
 
-* **Windows 7 (64 bit)**: 32 and 64 bit Python 2.7.10 and 3.5.0.
-* **OS X**: Python 2.7.10 and 3.4.2.
-* **Ubuntu 14.04.1 (64bit)**: Python 2.7.6 and 3.4.0.
+* Windows 10 64-bit using Python 2.7.17 (x86 and x64) and Python 3.8.2 (x86 and x64)
+* OS X: Python 2.7.10 and 3.4.2.
+* Ubuntu 18.04.4 64-bit and 32-bit using Python 2.7.17 and Python 3.7.5 / 3.6
 
 Dynamic libraries in this repository
 ====================================
