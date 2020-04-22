@@ -13,7 +13,7 @@ description = \
 setup(
 	name='pypxlib',
 
-	version='2.4-SNAPSHOT',
+	version='2.4',
 
 	description=description,
 	long_description=
