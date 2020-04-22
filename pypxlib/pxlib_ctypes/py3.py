@@ -605,7 +605,15 @@ add_library_search_dirs([])
 
 _is_64_bit = sys.maxsize > 2 ** 32
 
-_px_lib = 'pxlib_x64' if sys.platform == 'win32' and _is_64_bit else 'px'
+# Select the correct library for the platform and architecture
+_px_lib = None
+if sys.platform == 'win32' and _is_64_bit:
+        _px_lib = 'pxlib_x64'
+elif _is_64_bit:
+        _px_lib = 'px_x64'      
+else:
+    _px_lib = 'px'
+
 _libs["px"] = load_library(_px_lib)
 
 # 1 libraries
